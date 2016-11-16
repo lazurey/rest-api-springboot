@@ -1,0 +1,49 @@
+buildscript {
+  ext {
+    springBootVersion = '1.4.1.RELEASE'
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+plugins {
+  id 'java'
+  id 'idea'
+  id 'jacoco'
+}
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+  baseName = 'todo-list'
+  version =  '0.1.0'
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled false
+    csv.enabled false
+    html.destination "${buildDir}/jacocoHtml"
+  }
+}
+
+check.dependsOn jacocoTestReport
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.slf4j:slf4j-api:1.7.21'
+
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+}

@@ -1,0 +1,126 @@
+#%RAML 0.8
+title: Todo App API document
+baseUri: http://localhost:8080
+version: v1
+
+/todos:
+  get:
+    description: return all todo items in a list
+    queryParameters:
+      completed:
+        description: filter for completion
+        type: boolean
+        required: false
+        example: true
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": 1,
+                  "title": "sample title with id 1",
+                  "completed": true,
+                  "updatedDatetime": "2016-07-13 17:00:00",
+                  "createdDatetime": "2016-07-13 17:00:00"
+                },
+                {
+                  "id": 2,
+                  "title": "sample title with id 2",
+                  "completed": false,
+                  "updatedDatetime": "2016-07-15 11:10:00",
+                  "createdDatetime": "2016-07-15 11:00:00"
+                }
+              ]
+
+  post:
+    description: create a new todo item
+    body:
+      application/json:
+        formParameters:
+          title:
+            description: the title of the item to be added
+            type: string
+            required: true
+            example: the title of the new item
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1,
+                "title": "the title for the new todo item",
+                "completed": false,
+                "createdDatetime": "2016-07-01 17:00:00",
+                "updatedDatetime": "2016-07-01 17:00:00"
+              }
+      400:
+        description: if title is null or emppty
+        body:
+          application/json:
+            example: |
+              {
+                "message": "title shouldn't be empty."
+              }
+
+/todos/{itemId}:
+  uriParameters:
+    itemId:
+      description: the item id
+      type: integer
+      required: true
+  patch:
+    description: update existing item
+    body:
+      application/json:
+        example: |
+          {
+            "title": "updated title"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1,
+                "title": "updated title",
+                "completed": false,
+                "createdDatetime": "2016-07-01 17:10:00",
+                "updatedDatetime": "2016-07-01 17:00:00"
+              }
+      400:
+        description: if title is null or empty
+        body:
+          application/json:
+            example: |
+              {
+                "message": "title shouldn't be empty."
+              }
+      404:
+        description: if item not exist
+        body:
+          application/json: :
+            example: |
+              {
+                "message": "wrong item id."
+            }
+  delete:
+    description: remove an item
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "item has been removed successfully."
+              }
+      404:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "wrong item id."
+              }
