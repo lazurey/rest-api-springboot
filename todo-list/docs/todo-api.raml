@@ -99,6 +99,14 @@ version: v1
               {
                 "message": "title shouldn't be empty."
               }
+      404:
+        description: if item not exist
+        body:
+          application/json: :
+            example: |
+              {
+                "message": "wrong item id."
+            }
   delete:
     description: remove an item
     responses:
@@ -109,7 +117,7 @@ version: v1
               {
                 "message": "item has been removed successfully."
               }
-      400:
+      404:
         body:
           application/json:
             example: |
